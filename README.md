@@ -2,12 +2,12 @@
   <img src="docs/banner.svg" alt="dsh-purge" width="720">
 </p>
 
-<h1 align="center">⚔️ DeepSeek Harness 网络安全红队工具（dsh-purge）</h1>
+<h1 align="center">⚔️ dsh-purge</h1>
 
-<p align="center"><strong>Version 1.1.72</strong></p>
+<p align="center"><strong>SodolaAvalon 维护版 · DeepSeek Harness 破甲与补丁加固</strong></p>
 
 <p align="center">
-  <em>DeepSeek Harness 破甲：让所有模型都能破甲，不同模型可换不同提示词；默认提示词面向国模「小码酱」。Jailbreak for every model — swap prompts per model. 基于 SodolaAvalon/dsh-purge 的 fork。</em>
+  <em>装在本机官方 DeepSeek Harness 上的破甲插件：改提示词、拆审批门、拆沙箱、补宿主兼容。支持 dsh 0.2（桌面端 / web）。</em>
 </p>
 
 <p align="center">
@@ -31,6 +31,7 @@
 ## 目录
 
 - [介绍](#介绍)
+- [这个 fork 改了什么](#这个-fork-改了什么)
 - [署名要求](#署名要求)
 - [许可证](#许可证)
 - [适配范围](#适配范围)
@@ -46,9 +47,9 @@
 
 ## 介绍
 
-这是我写的插件。装在你本机官方 [DeepSeek Harness](https://www.deepseek.com/harness/) 上，用来做网络安全红队评测。官方 **Web**（`dsh web`）和官方 **桌面端**（EXE）我都支持，两边你要分开装、分开点「应用」。
+插件装在本机官方 [DeepSeek Harness](https://www.deepseek.com/harness/) 上，用来做网络安全红队评测。官方 **Web**（`dsh web`）和官方 **桌面端**（EXE）都支持，两边分开装、分开点「应用」。
 
-Harness 不只是把问题交给模型。它还会在运行时改提示词、审批门、沙箱和会话格式。只看「模型答不答」，会把宿主拦截误当成模型拒绝。我这个插件在你自己的安装里把这两层分开，用来做受控评测，也用来看默认策略该不该收紧。
+Harness 不只是把问题交给模型。它还会在运行时改提示词、审批门、沙箱和会话格式。只看「模型答不答」，会把宿主拦截误当成模型拒绝。这个插件在你自己的安装里把这两层分开，用来做受控评测，也用来看默认策略该不该收紧。
 
 
 | 你会用到             | 它做什么                                            |
@@ -62,7 +63,26 @@ Harness 不只是把问题交给模型。它还会在运行时改提示词、审
 
 不写死盘符。按 `$DSH_HOME`、dsh 启动器旁边的 `.dsh`，再退回 `~/.dsh`。不改 Harness 源码仓库，在 **dsh-purge** 的「清洗」里点「应用」才写入。身份来自插件里的加密提示词，也就是提示词框默认显示的那一份。不读取宿主磁盘上的提示词文件。
 
-我这个插件只动你本机已经装好的官方 `@deepseek-ai` 包和本机配置。它不是公网扫描器，也不是打别人站点的套件。仓库里没有木马，也没有对外攻击载荷。
+插件只动你本机已经装好的官方 `@deepseek-ai` 包和本机配置。它不是公网扫描器，也不是打别人站点的套件。仓库里没有木马，也没有对外攻击载荷。
+
+## 这个 fork 改了什么
+
+上游 1.1.71 在 dsh 0.2.1 上一跑就崩。这里修好了，并往前推了两步。
+
+| 改动 | 内容 | 你能感觉到什么 |
+| --- | --- | --- |
+| **兼容热修** | 收回三处 0.2.1 补丁：`cwd` 变量、required contexts、CLI 入口 | 插件起得来，不再一运行就报错 |
+| **提示词 v2** | 尾部锚（recency）、按模型挂补充段、执行内核 / 思考协议 / 修复协议 | 长对话后段不容易掉链子 |
+| **补丁层 v3** | 空白容错匹配、锚点没命中会报警、197 条锚点回归自检 | 宿主升级后能看出破甲掉没掉，而不是靠猜 |
+
+自检（不需要宿主文件）：
+
+```bash
+node scripts/render-prompt.mjs      # 看模型最终收到什么系统提示词
+node scripts/check-patches.mjs      # 197 个锚点，改缩进还能不能命中
+```
+
+改动记录：[docs/fork-notes.md](docs/fork-notes.md) · [docs/v2-prompt.md](docs/v2-prompt.md) · [docs/v3-patches.md](docs/v3-patches.md)
 
 ---
 
@@ -70,17 +90,16 @@ Harness 不只是把问题交给模型。它还会在运行时改提示词、审
 
 ## 署名要求
 
-你要用我这个项目的名字、思路、代码或提示词，必须写我的名字，并写明来源仓库：[YuJunZhiXue/dsh-purge](https://github.com/YuJunZhiXue/dsh-purge)。
+原项目：[YuJunZhiXue/dsh-purge](https://github.com/YuJunZhiXue/dsh-purge)，作者 叫我小杨同学。
+本 fork：[SodolaAvalon/dsh-purge](https://github.com/SodolaAvalon/dsh-purge)，由 SodolaAvalon 维护。
 
-本 fork 的所有改动着作权归 SodolaAvalon，原项目著作权归 YuJunZhiXue。
-
-不署名、藏来源、改头换面当自己的，我会追究。
+二开或再分发请你保留原作者署名，并注明来源仓库；本 fork 的改动（兼容热修、提示词 v2、补丁层 v3）著作权归 SodolaAvalon。
 
 ---
 
 ## 许可证
 
-这一版开始，正本是我写的 [商业软件许可](./LICENSE)。我保留所有权利。**这不是开源协议，也不是 MIT。**
+正本是原作者的 [商业软件许可](./LICENSE)。**这不是开源协议，也不是 MIT。**
 
 | 你要做的事 | 怎么走 |
 | --- | --- |

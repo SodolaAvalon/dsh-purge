@@ -2,12 +2,14 @@
   <img src="docs/banner.svg" alt="dsh-purge" width="720">
 </p>
 
-<h1 align="center">⚔️ DeepSeek Harness cybersecurity red-team tool (dsh-purge)</h1>
+<h1 align="center">⚔️ dsh-purge</h1>
+
+<p align="center"><strong>SodolaAvalon fork · DeepSeek Harness jailbreak and patch hardening</strong></p>
 
 <p align="center"><strong>Version 1.1.71</strong></p>
 
 <p align="center">
-  <em>DeepSeek Harness jailbreak: every model, swap prompts per model. Default prompt for 小码酱. Please star ⭐ If you build on this, see Attribution required.</em>
+  <em>Installs into your local official DeepSeek Harness. Rewrites prompts, opens approval gates, opens the sandbox, and keeps host patches applying across dsh upgrades. Targets dsh 0.2 (desktop and web).</em>
 </p>
 
 <p align="center">
